@@ -1,0 +1,20 @@
+---
+title: "Marketing Spend on Customer Purchase Behaviour"
+author: "Siyuan Yin 32876794"
+format:
+  html: default
+  pdf: default
+execute: 
+  echo: false
+  message: false
+  warning: false
+---
+
+```{r}
+#｜label: setup
+#｜include：false
+library(tidyverse)
+library(knitr)
+library(here)
+marketing_raw_data<-read.csv(here("data/32876793_SiyuanYin.csv"))
+```
