@@ -24,7 +24,64 @@ marketing_raw_data<-read.csv(here("data/32876793_SiyuanYin.csv"))
 Marketing campaigns are currently a key promotional tool for driving sales. This report examines the relationship between the costs of personalized marketing campaigns and customer purchase amount over the last quarter. The purpose is to assess the effectiveness of last quarter's marketing efforts.
 
 # Research Question {#sec-Research_Question}
-This study aims to investigate the relationship between "marketing_spend" and "purchase_amount" , these are two variables from the dataset. By the relationship between these two variables we can answer the question from @sec-Introduction.
+This study aims to investigate the relationship between "marketing_spend" and "purchase_amount". The second objective is to examine the conversion efficiency from marketing to purchase for each customer segment.
+
+# Dataset Introduction {#sec-Data_Introduction}
+
+**Describing data**.  
+  The dataset records the customer information and measures how customers are impacted by the marketing campaigns. It records each customer's information, such as the unique identifier, sign-upd date,the customer category, marketing cost, purchase behavior, visit times and some additioal information. Overall, this dataset provides a comprehensive record of customer activity and engagement, which can be used to understand the relationship between marketing campaigns and customer purchasing behavior.
+
+**Data Clean**. 
+To clean to data, first i convert the `signup_date` to same format(POSIXct), second i delete rows that contain missing in `purchase_amount` and `marketing_spend` columns , and replace missing vaule by NA in `notes` column. 
+```{r}
+#| label: data_clean
+# convert to date stcture in "signup_date" column
+marketing_data<- marketing_raw_data|>
+  #delete rows that "purchase_amount" column are missing
+  drop_na(purchase_amount) |>
+    drop_na(marketing_spend) |>
+  mutate(signup_date=
+  parse_date_time(
+    signup_date,orders=c("ymd","dmy","mdy")),
+#replace missing value by NA in "notes" column 
+notes=na_if(notes,""),
+  notes=na_if(notes,"N/A"))
+```
+
+## Dataset Description {#sec-Dataset_Description}
+
+The dataset contains **`r nrow(marketing_data)`** observations, and **`r ncol(marketing_data)`** variables. The dataset includes identifier, signup date, marketing cost, purchasing behavior, visit, some additional information and categories of customer that together describe the business campaigns. The **customer_id** in string type identifies each individual customer, while **signup_date** in date type records the date of customer sign-up. The numerical variables, which include **marketing_spend**, **visits**, and **purchase_amount** record the marketing cost, visit times, and customer purchase amount, respectively. The **segment** variable in string type record each category of customers into, such as Consumer, SMB, and Enterprise. Finally, the **notes** variable in string type provides additional information.   
+
+@fig-segment_count below illustrates the three different customer types involved in this business activity and their respective total numbers. The x-axis represents the customer types, denoted by the **Consumer**, **Enterprise**, and **SMB** in red, green, and blue, respectively. The y-axis represents the total number of customers for each type. From the @fig-segment_count, the amount of Consumer is the most, which followed by SMB, and the least is Enterprise.
+```{r}
+#| label: fig-segment_count
+#| fig-cap: "number of customers by segment"
+
+marketing_data |>
+ggplot(aes(x = segment)) +
+  geom_bar(aes(fill=segment)) +
+  labs(
+    x = "Segment",
+    y = "Count",
+  )
+```
+
+@tbl-segment_summary below is a summary of categorical data organized by segment. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and average number of visits. From the @tbl-segment_summary, we can see that marketing spend is highest for SMG, followed by Consumer, and lowest for Enterprise. Purchase volume is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above.
+```{r}
+#| label: tbl-segment_summary
+#| tbl-cap: "Summary for each segment"
+  marketing_data |>
+    group_by(segment) |>
+    summarise(
+   "count"=n(),
+   "Avg_marketing"=round(mean(marketing_spend),2),
+   "Avg_purchase"=round(mean(purchase_amount),2),
+   "Avg_visits"=round(mean(visits),2)
+     ) |>
+    kable()
+```
+
+## Results {#sec-Results}
 
 
 
