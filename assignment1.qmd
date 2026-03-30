@@ -16,5 +16,16 @@ execute:
 library(tidyverse)
 library(knitr)
 library(here)
+#Upload the data 
 marketing_raw_data<-read.csv(here("data/32876793_SiyuanYin.csv"))
 ```
+
+# Introduction {#sec-Introduction}
+Marketing campaigns are currently a key promotional tool for driving sales. This report examines the relationship between the costs of personalized marketing campaigns and customer purchase amount over the last quarter. The purpose is to assess the effectiveness of last quarter's marketing efforts.
+
+# Research Question {#sec-Research_Question}
+This study aims to investigate the relationship between "marketing_spend" and "purchase_amount" , these are two variables from the dataset. By the relationship between these two variables we can answer the question from @sec-Introduction.
+
+
+
+
