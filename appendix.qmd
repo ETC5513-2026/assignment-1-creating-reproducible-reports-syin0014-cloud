@@ -1,0 +1,28 @@
+---
+title: "The usage of AI"
+format:
+  html: default
+  pdf: default
+---
+
+![R code for transfering to date](images/date_ai.png)
+
+![R code for group colors in plot](images/group_color.png)
+
+![Types of ggplot](images/plot.png)
+
+![Types of ggplot](images/plot2.png)
+
+![Types of ggplot](images/plot3.png)
+
+![R code for save decimal place](images/decimal_place.png)
+
+![R code for zoom y-axis](images/zoom.png)
+
+![R code for insert picture](images/insert.png)
+
+![help to describe boxplot](images/boxplot_describe.png)
+
+![R code for plot linear regression](images/linear_regression_plot.png)
+
+![help to render to pdf](images/render_pdf.png)
