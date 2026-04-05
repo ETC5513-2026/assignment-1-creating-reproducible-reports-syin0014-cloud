@@ -24,7 +24,7 @@ marketing_raw_data<-read.csv(here("data/32876793_SiyuanYin.csv"))
 Marketing campaigns are currently a key promotional tool for driving sales. This report examines the relationship between the costs of personalized marketing campaigns and customer purchase amount over the last quarter. The purpose is to assess the effectiveness of last quarter's marketing efforts.
 
 # Research Question {#sec-Research_Question}
-This study aims to investigate the relationship between "marketing_spend" and "purchase_amount". The second objective is to examine the conversion efficiency from marketing to purchase for each customer segment.
+This study aims to investigate the relationship between "marketing_spend" and "purchase_amount". The second objective is to examine which segment has the highest conversion efficiency from marketing to purchase.
 
 # Dataset Introduction {#sec-Data_Introduction}
 
@@ -56,7 +56,8 @@ The dataset contains **`r nrow(marketing_data)`** observations, and **`r ncol(ma
 ```{r}
 #| label: fig-segment_count
 #| fig-cap: "number of customers by segment"
-
+#| fig-width: 6
+#| fig-height: 4
 marketing_data |>
 ggplot(aes(x = segment)) +
   geom_bar(aes(fill=segment)) +
@@ -66,7 +67,7 @@ ggplot(aes(x = segment)) +
   )
 ```
 
-@tbl-segment_summary below is a summary of categorical data organized by segment. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and average number of visits. From the @tbl-segment_summary, we can see that marketing spend is highest for SMG, followed by Consumer, and lowest for Enterprise. Purchase volume is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above.
+@tbl-segment_summary below is a summary of categorical data organized by segment. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and average number of visits. From the @tbl-segment_summary, we can see that marketing spend is highest for SMG, followed by Consumer, and lowest for Enterprise. Purchase amount is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above.
 ```{r}
 #| label: tbl-segment_summary
 #| tbl-cap: "Summary for each segment"
@@ -81,8 +82,43 @@ ggplot(aes(x = segment)) +
     kable()
 ```
 
-## Results {#sec-Results}
+# Results {#sec-Results}
+@fig-linear_regression shows a **positive linear correlation** between **marketing_spend** and **purchase_amount**, indicating that, generally speaking, as marketing spending increases, purchase amount also increases. Additionally, the data points are somewhat scattered around the regression line, suggesting that there may be some individual variation and fluctuations.
 
+```{r}
+#| label: fig-linear_regression
+#| fig-cap: "Relationship between marketing_spend and purchase_amount"
+#| fig-width: 5
+#| fig-height: 4
 
+  #plot the regression
+ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) 
+```
 
+@fig-boxplot displays the marketing ratio for each of these three customer segments(ratio=divide purchase amount by marketing cost). Most data points fall between **0.5** and **1.5**, and there are no significant differences among the three segments. In terms of the median, the Enterprise segment is higher than the other two segments, indicating that the **Enterprise segment** typically has a slightly more efficient marketing conversion ratio. Additionally, an examination of the outliers reveals that the Enterprise segment has some high outliers, suggesting that in certain cases, this category may achieve exceptionally high returns on marketing investment. In summary, the **Enterprise segment** demonstrates higher marketing efficiency and purchasing potential, but also exhibits relatively significant volatility.
 
+```{r}
+#| label: fig-boxplot
+#| fig-cap: "The conversion efficiency of marketing expenditures"
+#| fig-width: 5
+#| fig-height: 4
+
+ #creat new dataframe that contain ratio
+ marketing_ratio<- marketing_data |>
+  mutate(ratio=round((purchase_amount/marketing_spend),2)) |>
+  select(segment,ratio)
+
+#plot the marketing_ratio by each segment
+marketing_ratio |>
+  ggplot(aes(x = segment, y = ratio, fill = segment)) +
+  geom_boxplot() +
+  coord_cartesian(ylim = c(0, 14))+
+  labs(
+    x = "Customer Segment",
+    y = "Marketing Efficiency ratio"
+  )
+```
+
+Overall, back to @sec-Research_Question. There is a positive linear relationship between marketing_spend and purchase_amount, and Enterprise has the highest conversion efficiency from marketing to purchase.
