@@ -1,6 +1,6 @@
 ---
 title: "Marketing Spend on Customer Purchase Behaviour"
-author: "Siyuan Yin 32876794"
+author: "Siyuan Yin 32876793"
 format:
   html: default
   pdf: default
@@ -13,33 +13,37 @@ execute:
 ```{r}
 #｜label: setup
 #｜include：false
+# load packages 
 library(tidyverse)
 library(knitr)
 library(here)
-#Upload the data 
+
+#Upload the data by relative path
 marketing_raw_data<-read.csv(here("data/32876793_SiyuanYin.csv"))
 ```
 
 # Introduction {#sec-Introduction}
-Marketing campaigns are currently a key promotional tool for driving sales. This report examines the relationship between the costs of personalized marketing campaigns and customer purchase amount over the last quarter. The purpose is to assess the effectiveness of last quarter's marketing efforts.
+Marketing campaigns are a key promotional tool for driving sales. This report examines the relationship between the costs of personalized marketing campaigns and customer purchase amount over the last quarter. The aim is to evaluate the effectiveness of these marketing activities and provide evidence to inform future decision-making.
 
 # Research Question {#sec-Research_Question}
-This study aims to investigate the relationship between "marketing_spend" and "purchase_amount". The second objective is to examine which segment has the highest conversion efficiency from marketing to purchase.
+This study investigates whether higher **marketing_spend** is associated with increased **purchase_amount** at the customer level. The second objective is to examine which segment has the highest conversion efficiency from marketing to purchase.
 
 # Dataset Introduction {#sec-Data_Introduction}
 
 **Describing data**.  
-  The dataset records the customer information and measures how customers are impacted by the marketing campaigns. It records each customer's information, such as the unique identifier, sign-upd date,the customer category, marketing cost, purchase behavior, visit times and some additioal information. Overall, this dataset provides a comprehensive record of customer activity and engagement, which can be used to understand the relationship between marketing campaigns and customer purchasing behavior.
+  The dataset records customer information and measures how customers are influenced by marketing campaigns. It includes details such as a unique identifier, sign-up date, customer segment, marketing expenditure, purchase behaviour, visit frequency, and additional information. Overall, this dataset provides a comprehensive record of customer activity and engagement, which can be used to analyse the relationship between marketing campaigns and customer purchasing behaviour.
 
 **Data Clean**. 
-To clean to data, first i convert the `signup_date` to same format(POSIXct), second i delete rows that contain missing in `purchase_amount` and `marketing_spend` columns , and replace missing vaule by NA in `notes` column. 
+The data were cleaned by following steps. The `signup_date` variable was converted into a POSIXct format. Observations with missing values in variables (`purchase_amount` and `marketing_spend`) were removed. Missing values in the `notes` column were replaced by NA. 
 ```{r}
 #| label: data_clean
-# convert to date stcture in "signup_date" column
+# save the clean data to marketing_data
 marketing_data<- marketing_raw_data|>
-  #delete rows that "purchase_amount" column are missing
+#delete rows that "purchase_amount" column are missing
   drop_na(purchase_amount) |>
     drop_na(marketing_spend) |>
+# convert "signup_date" to POSIXct structure.(date) (y-year,m-month,d-day)
+# can ignore the warning message, cause it will transfer "N/A" to NA
   mutate(signup_date=
   parse_date_time(
     signup_date,orders=c("ymd","dmy","mdy")),
@@ -48,19 +52,21 @@ notes=na_if(notes,""),
   notes=na_if(notes,"N/A"))
 ```
 
+
 ## Dataset Description {#sec-Dataset_Description}
 
 The dataset contains **`r nrow(marketing_data)`** observations, and **`r ncol(marketing_data)`** variables. The dataset includes identifier, signup date, marketing cost, purchasing behavior, visit, some additional information and categories of customer that together describe the business campaigns. The **customer_id** in string type identifies each individual customer, while **signup_date** in date type records the date of customer sign-up. The numerical variables, which include **marketing_spend**, **visits**, and **purchase_amount** record the marketing cost, visit times, and customer purchase amount, respectively. The **segment** variable in string type record each category of customers into, such as Consumer, SMB, and Enterprise. Finally, the **notes** variable in string type provides additional information.   
 
 
-**@fig-segment_count** below illustrates the three different customer types involved in this business activity and their respective total numbers. The x-axis represents the customer types, denoted by the **Consumer**, **Enterprise**, and **SMB** in red, green, and blue, respectively. The y-axis represents the total number of customers for each type. From the @fig-segment_count, the amount of Consumer is the most, which followed by SMB, and the least is Enterprise.
+**@fig-segment_count** illustrates the distribution of customers across the three segments. The x-axis represents the customer segments (Consumer, Enterprise, and SMB), while the y-axis shows the total number of customers in each group. As shown in @fig-segment_count, the Consumer segment has the largest number of customers, followed by SMB, while Enterprise represents the smallest group.
 ```{r}
 #| label: fig-segment_count
 #| fig-cap: "number of customers by segment"
-#| fig-width: 6
-#| fig-height: 4
+#| fig-width: 5
+#| fig-height: 3
 marketing_data |>
 ggplot(aes(x = segment)) +
+#each segment has different color
   geom_bar(aes(fill=segment)) +
   labs(
     x = "Segment",
@@ -69,14 +75,16 @@ ggplot(aes(x = segment)) +
 ```
 
 
-**@tbl-segment_summary** below is a summary of categorical data organized by segment. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and average number of visits. From the @tbl-segment_summary, we can see that marketing spend is highest for SMG, followed by Consumer, and lowest for Enterprise. Purchase amount is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above.
+**@tbl-segment_summary** below is a summary of categorical data organized by segment. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and average number of visits. @tbl-segment_summary shows that marketing spend is highest for SMB, followed by Consumer, and lowest for Enterprise. Purchase amount is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above. This indicates that SMB customers are generally more engaged and generate higher spending.
 ```{r}
 #| label: tbl-segment_summary
 #| tbl-cap: "Summary for each segment"
   marketing_data |>
+#summary by eacg segment   
     group_by(segment) |>
     summarise(
    "count"=n(),
+#round(x,2) means only save 2 decimal places
    "Avg_marketing"=round(mean(marketing_spend),2),
    "Avg_purchase"=round(mean(purchase_amount),2),
    "Avg_visits"=round(mean(visits),2)
@@ -87,17 +95,30 @@ ggplot(aes(x = segment)) +
 
 # Results {#sec-Results}
 
-**@fig-linear_regression** shows a **positive linear correlation** between **marketing_spend** and **purchase_amount**, indicating that, generally speaking, as marketing spending increases, purchase amount also increases. Additionally, the data points are somewhat scattered around the regression line, suggesting that there may be some individual variation and fluctuations.
+```{r}
+#| label: check the linear model
+#| include: false
+
+#The regression results are significant (p-value < 0.001), there are strong positive relationship between marketing spend(x) and purchase amount(y).
+lm_model <- lm(purchase_amount ~ marketing_spend, data = marketing_data)
+summary(lm_model)
+```
+
+**@fig-linear_regression** shows a **positive linear association** between marketing_spend and purchase_amount. This indicates that higher marketing expenditure is generally associated with higher customer spending. However, the dispersion of data points around the regression line suggests that there is substantial individual variation, implying that marketing spend is not the only factor influencing purchasing behaviour.
 ```{r}
 #| label: fig-linear_regression
 #| fig-cap: "Relationship between marketing_spend and purchase_amount"
-#| fig-width: 3
+#| fig-width: 5
 #| fig-height: 3
 
-  #plot the regression
+#plot the regression
 ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE) 
+  geom_smooth(method = "lm", se = FALSE)+
+  labs(
+    x = "Marketing spend $",
+    y = "purchase amount $",
+  )
 ```
 
 
@@ -110,6 +131,7 @@ ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
 
  #creat new dataframe that contain ratio
  marketing_ratio<- marketing_data |>
+# ratio means every 1 marketing spend increase, how much purchase increase
   mutate(ratio=round((purchase_amount/marketing_spend),2)) |>
   select(segment,ratio)
 
@@ -117,6 +139,7 @@ ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
 marketing_ratio |>
   ggplot(aes(x = segment, y = ratio, fill = segment)) +
   geom_boxplot() +
+ #control the scale of y-axis 
   coord_cartesian(ylim = c(0, 14))+
   labs(
     x = "Customer Segment",
@@ -125,5 +148,5 @@ marketing_ratio |>
 ```
 
 
-Overall, back to @sec-Research_Question. There is a positive linear relationship between marketing_spend and purchase_amount, and Enterprise has the highest conversion efficiency from marketing to purchase.
+Overall, returning to @sec-Research_Question, the results indicate a positive linear association between marketing spend and purchase amount. This suggests that higher marketing spend is generally associated with increased purchase amount. In addition, the Enterprise segment demonstrates slightly higher conversion efficiency from marketing investment to purchase, although with greater variability.
 

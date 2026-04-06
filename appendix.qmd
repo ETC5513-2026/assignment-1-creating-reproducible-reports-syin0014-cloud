@@ -26,3 +26,5 @@ format:
 ![R code for plot linear regression](images/linear_regression_plot.png)
 
 ![help to render to pdf](images/render_pdf.png)
+
+![help to check the English](images/English.png)
