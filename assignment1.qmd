@@ -1,5 +1,5 @@
 ---
-title: "Marketing Spend on Customer Purchase Behaviour"
+title: "Marketing Spend on Consumer Purchase Behaviour"
 author: "Siyuan Yin 32876793"
 format:
   html: default
