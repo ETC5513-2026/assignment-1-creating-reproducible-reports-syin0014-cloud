@@ -11,8 +11,8 @@ execute:
 ---
 
 ```{r}
-#｜label: setup
-#｜include：false
+#| label: setup
+#| include: false
 # load packages 
 library(tidyverse)
 library(knitr)
@@ -43,7 +43,7 @@ marketing_data<- marketing_raw_data|>
   drop_na(purchase_amount) |>
     drop_na(marketing_spend) |>
 # convert "signup_date" to POSIXct structure.(date) (y-year,m-month,d-day)
-# can ignore the warning message, cause it will transfer "N/A" to NA
+# can ignore the warning message, cause it will not recognize "N/A" in the "signup_date", but will transfer "N/A" to NA
   mutate(signup_date=
   parse_date_time(
     signup_date,orders=c("ymd","dmy","mdy")),
@@ -80,10 +80,10 @@ ggplot(aes(x = segment)) +
 #| label: tbl-segment_summary
 #| tbl-cap: "Summary for each segment"
   marketing_data |>
-#summary by eacg segment   
+#summary by each segment   
     group_by(segment) |>
     summarise(
-   "count"=n(),
+   Count = n(),
 #round(x,2) means only save 2 decimal places
    "Avg_marketing"=round(mean(marketing_spend),2),
    "Avg_purchase"=round(mean(purchase_amount),2),
@@ -99,7 +99,7 @@ ggplot(aes(x = segment)) +
 #| label: check the linear model
 #| include: false
 
-#The regression results are significant (p-value < 0.001), there are strong positive relationship between marketing spend(x) and purchase amount(y).
+#The regression results are significant (p-value < 0.001), there is a significant positive relationship between marketing spend(x) and purchase amount(y).
 lm_model <- lm(purchase_amount ~ marketing_spend, data = marketing_data)
 summary(lm_model)
 ```
@@ -127,7 +127,7 @@ ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
 #| label: fig-boxplot
 #| fig-cap: "The conversion efficiency of marketing expenditures"
 #| fig-width: 5
-#| fig-height: 3
+#| fig-height: 3 
 
  #creat new dataframe that contain ratio
  marketing_ratio<- marketing_data |>
