@@ -2,8 +2,10 @@
 title: "Marketing Spend on Consumer Purchase Behaviour"
 author: "Siyuan Yin 32876793"
 format:
-  html: default
-  pdf: default
+  html: 
+     number-sections: true
+  pdf: 
+     number-sections: true
 execute: 
   echo: false
   message: false
