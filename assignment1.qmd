@@ -36,7 +36,7 @@ This study investigates whether higher **marketing_spend** is associated with in
 **Describing data**.  
   The dataset records customer information and measures how customers are influenced by marketing campaigns. It includes details such as a unique identifier, sign-up date, customer segment, marketing expenditure, purchase behaviour, visit frequency, and additional information. Overall, this dataset provides a comprehensive record of customer activity and engagement, which can be used to analyse the relationship between marketing campaigns and customer purchasing behaviour.
 
-**Data Clean**. 
+**Data Clean**.  
 The data were cleaned by following steps. The `signup_date` variable was converted into a POSIXct format. Observations with missing values in variables (`purchase_amount` and `marketing_spend`) were removed. Missing values in the `notes` column were replaced by NA. 
 ```{r}
 #| label: data_clean
