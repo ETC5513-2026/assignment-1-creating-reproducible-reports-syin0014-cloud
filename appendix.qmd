@@ -4,6 +4,16 @@ format:
   html: default
   pdf: default
 ---
+# Ai Acknowledgement
+AI tools were used to assist with coding, visualisation, and minor language improvements in this assignment.
+
+1. Assisted with R coding (e.g., data cleaning, and plotting)
+2. Supported ggplot visualisation (e.g., colours, scaling, regression plots)
+3. Helped interpret and describe figures (e.g., boxplots, regression)
+4. Assisted with Quarto formatting (e.g., inserting images, rendering PDF)
+5. Corrected the English
+
+# Ai Screenshot
 
 ![R code for transfering to date](images/date_ai.png)
 

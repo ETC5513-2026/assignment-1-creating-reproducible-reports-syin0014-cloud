@@ -1,9 +1,10 @@
 ---
-title: "Marketing Spend on Consumer Purchase Behaviour"
+title: "Marketing Spend on Customer Purchase Behaviour"
 author: "Siyuan Yin 32876793"
 format:
   html: 
      number-sections: true
+     toc: true
   pdf: 
      number-sections: true
 execute: 
@@ -60,12 +61,13 @@ notes=na_if(notes,""),
 The dataset contains **`r nrow(marketing_data)`** observations, and **`r ncol(marketing_data)`** variables. The dataset includes identifier, signup date, marketing cost, purchasing behavior, visit, some additional information and categories of customer that together describe the business campaigns. The **customer_id** in string type identifies each individual customer, while **signup_date** in date type records the date of customer sign-up. The numerical variables, which include **marketing_spend**, **visits**, and **purchase_amount** record the marketing cost, visit times, and customer purchase amount, respectively. The **segment** variable in string type record each category of customers into, such as Consumer, SMB, and Enterprise. Finally, the **notes** variable in string type provides additional information.   
 
 
-**@fig-segment_count** illustrates the distribution of customers across the three segments. The x-axis represents the customer segments (Consumer, Enterprise, and SMB), while the y-axis shows the total number of customers in each group. As shown in @fig-segment_count, the Consumer segment has the largest number of customers, followed by SMB, while Enterprise represents the smallest group.
+**@fig-segment_count** illustrates the distribution of customers across the three segments. The x-axis represents the customer segments (Consumer, Enterprise, and SMB), while the y-axis shows the total number of customers in each group. As shown in @fig-segment_count, the consumer segment has the largest number of customers, followed by SMB, while Enterprise represents the smallest group.
 ```{r}
 #| label: fig-segment_count
 #| fig-cap: "number of customers by segment"
 #| fig-width: 5
 #| fig-height: 3
+
 marketing_data |>
 ggplot(aes(x = segment)) +
 #each segment has different color
@@ -81,6 +83,7 @@ ggplot(aes(x = segment)) +
 ```{r}
 #| label: tbl-segment_summary
 #| tbl-cap: "Summary for each segment"
+
   marketing_data |>
 #summary by each segment   
     group_by(segment) |>
@@ -129,7 +132,7 @@ ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
 #| label: fig-boxplot
 #| fig-cap: "The conversion efficiency of marketing expenditures"
 #| fig-width: 5
-#| fig-height: 3 
+#| fig-height: 4
 
  #creat new dataframe that contain ratio
  marketing_ratio<- marketing_data |>
@@ -141,7 +144,7 @@ ggplot(marketing_data, aes(x = marketing_spend, y = purchase_amount)) +
 marketing_ratio |>
   ggplot(aes(x = segment, y = ratio, fill = segment)) +
   geom_boxplot() +
- #control the scale of y-axis 
+ #control the scale of y-axis (0-14)
   coord_cartesian(ylim = c(0, 14))+
   labs(
     x = "Customer Segment",

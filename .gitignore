@@ -5,3 +5,5 @@
 .DS_Store
 *.Rproj
 .comments/
+/.quarto/
+**/*.quarto_ipynb
