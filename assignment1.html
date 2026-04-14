@@ -93,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="sec-Research_Question" class="level1" data-number="2">
 <h1 data-number="2"><span class="header-section-number">2</span> Research Question</h1>
-<p>This study investigates whether higher <strong>marketing_spend</strong> is associated with increased <strong>purchase_amount</strong> at the customer level. The second objective is to examine which segment has the highest conversion efficiency from marketing to purchase.</p>
+<p>This study investigates whether higher <code>marketing_spend</code> is associated with increased <code>purchase_amount</code> at the customer level. The second objective is to examine which segment has the highest conversion efficiency from marketing to purchase.</p>
 </section>
 <section id="sec-Data_Introduction" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Dataset Introduction</h1>
@@ -103,8 +103,7 @@ The dataset records customer information and measures how customers are influenc
 The data were cleaned by following steps. The <code>signup_date</code> variable was converted into a POSIXct format. Observations with missing values in variables (<code>purchase_amount</code> and <code>marketing_spend</code>) were removed. Missing values in the <code>notes</code> column were replaced by NA.</p>
 <section id="sec-Dataset_Description" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="sec-Dataset_Description"><span class="header-section-number">3.1</span> Dataset Description</h2>
-<p>The dataset contains <strong>132</strong> observations, and <strong>7</strong> variables. The dataset includes identifier, signup date, marketing cost, purchasing behavior, visit, some additional information and categories of customer that together describe the business campaigns. The <strong>customer_id</strong> in string type identifies each individual customer, while <strong>signup_date</strong> in date type records the date of customer sign-up. The numerical variables, which include <strong>marketing_spend</strong>, <strong>visits</strong>, and <strong>purchase_amount</strong> record the marketing cost, visit times, and customer purchase amount, respectively. The <strong>segment</strong> variable in string type record each category of customers into, such as Consumer, SMB, and Enterprise. Finally, the <strong>notes</strong> variable in string type provides additional information.</p>
-<p><strong><a href="#fig-segment_count" class="quarto-xref">Figure&nbsp;1</a></strong> illustrates the distribution of customers across the three segments. The x-axis represents the customer segments (Consumer, Enterprise, and SMB), while the y-axis shows the total number of customers in each group. As shown in <a href="#fig-segment_count" class="quarto-xref">Figure&nbsp;1</a>, the consumer segment has the largest number of customers, followed by SMB, while Enterprise represents the smallest group.</p>
+<p>The dataset contains <strong>132</strong> observations, and <strong>7</strong> variables. The dataset includes identifier, signup date, marketing cost, purchasing behavior, visit, some additional information and categories of customer that together describe the business campaigns. The <code>customer_id</code> in string type identifies each individual customer, while <code>signup_date</code> in date type records the date of customer sign-up. The numerical variables, which include <code>marketing_spend</code>, <code>visits</code>, and <code>purchase_amount</code> record the marketing cost, visit times, and customer purchase amount, respectively. The <code>segment</code> variable in string type record each category of customers into, such as Consumer, SMB, and Enterprise. Finally, the <code>notes</code> variable in string type provides additional information.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-segment_count" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -119,7 +118,7 @@ Figure&nbsp;1: number of customers by segment
 </div>
 </div>
 </div>
-<p><strong><a href="#tbl-segment_summary" class="quarto-xref">Table&nbsp;1</a></strong> below is a summary of categorical data organized by segment. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and average number of visits. <a href="#tbl-segment_summary" class="quarto-xref">Table&nbsp;1</a> shows that marketing spend is highest for SMB, followed by Consumer, and lowest for Enterprise. Purchase amount is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above. This indicates that SMB customers are generally more engaged and generate higher spending.</p>
+<p><strong><a href="#fig-segment_count" class="quarto-xref">Figure&nbsp;1</a></strong> illustrates the distribution of customers across the three segments. The x-axis represents the customer segments (Consumer, Enterprise, and SMB), while the y-axis shows the total number of customers in each group. As shown in <a href="#fig-segment_count" class="quarto-xref">Figure&nbsp;1</a>, the consumer segment has the largest number of customers( 78 ), followed by SMB( 45 ), while Enterprise represents the smallest group( 9 ).</p>
 <div class="cell">
 <div id="tbl-segment_summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -167,11 +166,12 @@ Table&nbsp;1: Summary for each segment
 </figure>
 </div>
 </div>
+<p><strong><a href="#tbl-segment_summary" class="quarto-xref">Table&nbsp;1</a></strong> below is a summary of categorical data organized by <code>segment</code>. The table shows the total number of customers in each category, as well as the average marketing spend, average purchase amount, and number of visits. <a href="#tbl-segment_summary" class="quarto-xref">Table&nbsp;1</a> shows that average marketing spend is highest for SMB, followed by Consumer, and lowest for Enterprise. Average purchase amount is highest for SMB, followed by Consumer, and lowest for Enterprise. The order of visits is the same as above. This indicates that SMB customers are generally more engaged and generate higher spending.</p>
 </section>
 </section>
 <section id="sec-Results" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Results</h1>
-<p><strong><a href="#fig-linear_regression" class="quarto-xref">Figure&nbsp;2</a></strong> shows a <strong>positive linear association</strong> between marketing_spend and purchase_amount. This indicates that higher marketing expenditure is generally associated with higher customer spending. However, the dispersion of data points around the regression line suggests that there is substantial individual variation, implying that marketing spend is not the only factor influencing purchasing behaviour.</p>
+<p><strong><a href="#fig-linear_regression" class="quarto-xref">Figure&nbsp;2</a></strong> shows a <strong>positive linear association</strong> between <code>marketing_spend</code> and <code>purchase_amount</code>. The linear modle can explain 70.6% of the variation in <code>purchase_amount</code> by <code>marketing_spend</code>. This indicates that higher marketing expenditure is generally associated with higher customer spending. However, the dispersion of data points around the regression line suggests that there is substantial individual variation, implying that marketing spend is not the only factor influencing purchasing behaviour.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-linear_regression" class="quarto-float quarto-figure quarto-figure-center anchored">
